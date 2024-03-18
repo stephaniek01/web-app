@@ -2,7 +2,7 @@ import React from 'react'
 import DefaultInput from "../../components/inputs/defaultInput";
 import DefaultButton from "../../components/buttons/defaultButton";
 
-const Login = (props) => {
+const CreateDoctor = (props) => {
     return (
         <div className="flex bg-black/10 flex-col p-4 w-[400px] rounded-md gap-2">
             <DefaultInput label={"Name"} placeholder={"Enter Name"}/>
@@ -16,4 +16,4 @@ const Login = (props) => {
 
 }
 
-export default Login;
+export default CreateDoctor;
