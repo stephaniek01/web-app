@@ -4,7 +4,7 @@ import Step1 from "../createPatient/components/step1";
 import Step2 from "../createPatient/components/step2";
 import Step3 from "../createPatient/components/step3";
 
-const CreatePatient = (props) => {
+const CreateDoctor = (props) => {
     const [currentStep, setCurrentStep] = useState(1);
     const handleNextStep = () => {
         setCurrentStep(currentStep + 1);
@@ -43,4 +43,4 @@ const CreatePatient = (props) => {
 
 }
 
-export default CreatePatient;
+export default CreateDoctor;
