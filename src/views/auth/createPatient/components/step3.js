@@ -37,7 +37,7 @@ const Step3=({})=>{
             <div className={"flex flex-col gap-2"}>
                 <SelectInput label={"Ward Name"} options={wardNames} includeDefault/>
                 <DefaultInput label={"Ward Number"} placeholder={"Enter ward number"} type={"number"}/>
-                <SelectInput label={"Consultant Doctor"} options={consultantNames} includeDefault/>
+                <SelectInput label={"Consultant TeamPatients"} options={consultantNames} includeDefault/>
             </div>
         </div>
     )
