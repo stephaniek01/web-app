@@ -1,36 +1,22 @@
 import {
     Card,
-    CardHeader,
     Typography,
-    Button,
     CardBody,
-    Chip,
-    CardFooter,
-    Avatar,
-    IconButton,
-    Tooltip,
-    Input,
 } from "@material-tailwind/react";
-import TableHeader from "../../../components/table/tableHeader/tableHeader";
-import TablePagination from "../../../components/table/pagination/pagination";
+import {Fragment, useEffect, useState} from "react";
+import {getWards} from "../../../../../services/wards.service";
 
-const TABLE_HEAD = ["Name", "Type", "Occupied beds", "Available beds"];
-const TABLE_ROWS = [
-    {name: "Neurology", colSpan: 4},
-    {name: "NEU-F1", type: "Female", occupied: "20", available: "0",},
-    {name: "NEU-F1", type: "Female", occupied: "20", available: "0",},
-    {name: "NEU-F1", type: "Female", occupied: "20", available: "0",},
-    {name: "Dermatology", colSpan: 4},
-    {name: "DER-F1", type: "Female", occupied: "20", available: "0",},
-    {name: "DER-F1", type: "Female", occupied: "20", available: "0",},
-    {name: "DER-F1", type: "Female", occupied: "20", available: "0",},
-    {name: "Orthopedic", colSpan: 4},
-    {name: "ORT-F1", type: "Female", occupied: "20", available: "0",},
-    {name: "ORT-F1", type: "Female", occupied: "20", available: "0",},
-    {name: "ORT-F1", type: "Female", occupied: "20", available: "0",},
-];
+const TABLE_HEAD = ["ID", "Name"];
+// const TABLE_HEAD = ["Name", "Type", "Occupied beds", "Available beds"];
 
-export function WardTable({buttonName}) {
+export function WardTable() {
+
+    const [data, setData] = useState([])
+    useEffect(() => {
+        getWards().then((res) => {
+            setData(res.data)
+        })
+    }, []);
     return (
         <Card className="h-full w-full shadow-none border border-gray-100">
             <CardBody className="overflow-scroll px-0">
@@ -54,78 +40,84 @@ export function WardTable({buttonName}) {
                     </tr>
                     </thead>
                     <tbody>
-                    {TABLE_ROWS.map(
-                        (
-                            {
-                                name,
-                                type,
-                                occupied,
-                                available,
-                                colSpan
-                            },
-                            index,
-                        ) => {
-                            const isLast = index === TABLE_ROWS.length - 1;
+                    {console.log(data,"data")}
+                    {data.map((item, index) => {
+                            console.log(item)
+                            const isLast = index === data.length - 1;
                             const classes = isLast
                                 ? "p-4"
                                 : "p-4 border-b border-blue-gray-50";
-
                             return (
-                                <tr key={name}>
-                                    <td className={`p-4 border-b border-blue-gray-50 ${colSpan ? "bg-themeColor !text-white" : "bg-white"}`}
-                                        colSpan={colSpan ? colSpan : 1}>
-                                        <div className="flex items-center gap-3">
-                                            <Typography
-                                                variant="small"
-                                                className="font-bold"
-                                            >
-                                                {name}
-                                            </Typography>
-                                        </div>
-                                    </td>
-                                    {type &&
-                                        <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {type}
-                                            </Typography>
-                                        </td>}
-
-                                    {occupied &&
-                                        <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {occupied}
-                                            </Typography>
-                                        </td>}
-
-                                    {available &&
-                                        <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {available}
-                                            </Typography>
-                                        </td>}
-                                </tr>
+                                <Fragment key={index}>
+                                    {/*<tr>*/}
+                                    {/*    <td className={`p-4 border-b border-blue-gray-50*/}
+                                    {/*     ${true ? "bg-themeColor !text-white" : "bg-white"}`}*/}
+                                    {/*        colSpan={4}>*/}
+                                    {/*        <div className="flex items-center gap-3">*/}
+                                    {/*            <Typography*/}
+                                    {/*                variant="small"*/}
+                                    {/*                className="font-bold"*/}
+                                    {/*            >*/}
+                                    {/*                {item.specialty}*/}
+                                    {/*            </Typography>*/}
+                                    {/*        </div>*/}
+                                    {/*    </td>*/}
+                                    {/*</tr>*/}
+                                        <tr key={item.name}>
+                                            <td className={classes}>
+                                                <Typography
+                                                    variant="small"
+                                                    color="blue-gray"
+                                                    className="font-normal"
+                                                >
+                                                    {item.id}
+                                                </Typography>
+                                            </td>
+                                            <td className={classes}>
+                                                <Typography
+                                                    variant="small"
+                                                    color="blue-gray"
+                                                    className="font-normal"
+                                                >
+                                                    {item.name}
+                                                </Typography>
+                                            </td>
+                                            {/*<td className={classes}>*/}
+                                            {/*    <Typography*/}
+                                            {/*        variant="small"*/}
+                                            {/*        color="blue-gray"*/}
+                                            {/*        className="font-normal"*/}
+                                            {/*    >*/}
+                                            {/*        {item.type}*/}
+                                            {/*    </Typography>*/}
+                                            {/*</td>*/}
+                                            {/*<td className={classes}>*/}
+                                            {/*    <Typography*/}
+                                            {/*        variant="small"*/}
+                                            {/*        color="blue-gray"*/}
+                                            {/*        className="font-normal"*/}
+                                            {/*    >*/}
+                                            {/*        {item.occupiedBeds.length}*/}
+                                            {/*    </Typography>*/}
+                                            {/*</td>*/}
+                                            {/*<td className={classes}>*/}
+                                            {/*    <Typography*/}
+                                            {/*        variant="small"*/}
+                                            {/*        color="blue-gray"*/}
+                                            {/*        className="font-normal"*/}
+                                            {/*    >*/}
+                                            {/*        {item.availableBeds.length}*/}
+                                            {/*    </Typography>*/}
+                                            {/*</td>*/}
+                                        </tr>
+                                </Fragment>
                             )
-                                ;
                         },
                     )}
                     </tbody>
                 </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <TablePagination/>
-            </CardFooter>
+
         </Card>
     );
 }

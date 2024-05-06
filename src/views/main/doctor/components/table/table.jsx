@@ -1,26 +1,23 @@
-import {
-    Card,
-    Typography,
-    CardBody,
-    CardFooter,
-} from "@material-tailwind/react";
-import TablePagination from "../../../components/table/pagination/pagination";
+import { Card, Typography, CardBody, CardFooter} from "@material-tailwind/react";
 import {Link} from "react-router-dom";
+import {Fragment, useEffect, useState} from "react";
+import { getDoctorsList } from "../../../../../services/doctors.service";
 
 const TABLE_HEAD = ["Name", "Position", "Team"];
-const TABLE_ROWS = [
-    {name: "Neurology", colSpan: 4},
-    {name: "Dr. Marcus Johnson",link:"/teams/detail", position: "Consultant", team: "NEU-F1",},
-    {name: "Dr. Marcus Johnson",link:"/teams/detail", position: "Consultant", team: "NEU-F1",},
-    {name: "Dr. Marcus Johnson",link:"/teams/detail", position: "Consultant", team: "NEU-F1",},
-    {name: "Dermatology", colSpan: 4},
-    {name: "Dr. Marcus Johnson",link:"/teams/detail", position: "Consultant", team: "NEU-F1",},
-    {name: "Dr. Marcus Johnson",link:"/teams/detail", position: "Consultant", team: "NEU-F1",},
-    {name: "Orthopedic", colSpan: 4},
-    {name: "Dr. Marcus Johnson",link:"/teams/detail", position: "Consultant", team: "NEU-F1",},
-];
 
 export function DoctorTable({buttonName}) {
+    const [doctors, setDoctors] = useState([])
+
+    useEffect(()=>{
+        getDoctorsList()
+                    .then((response)=>{
+                        console.log(response)
+                        setDoctors(response.data)
+                    }).catch((error)=>{
+                        console.log(error)
+                    })
+    },[])
+
     return (
         <Card className="h-full w-full shadow-none border border-gray-100">
             <CardBody className="overflow-scroll px-0">
@@ -44,68 +41,73 @@ export function DoctorTable({buttonName}) {
                     </tr>
                     </thead>
                     <tbody>
-                    {TABLE_ROWS.map(
-                        (
-                            {
-                                name,
-                                link,
-                                position,
-                                team,
-                                colSpan
-                            },
-                            index,
-                        ) => {
-                            const isLast = index === TABLE_ROWS.length - 1;
+                    {doctors.map((item,index) => {
+                            const isLast = index === doctors.length - 1;
                             const classes = isLast
                                 ? "p-4"
                                 : "p-4 border-b border-blue-gray-50";
 
                             return (
-                                <tr key={name}>
-                                    <td className={`p-4 border-b border-blue-gray-50 ${colSpan ? "bg-themeColor !text-white" : "bg-white"}`}
-                                        colSpan={colSpan ? colSpan : 1}>
-                                        <div className="flex items-center gap-3">
-                                            <Link
-                                                to={link}
-                                                variant="small"
-                                                className="font-bold"
-                                            >
-                                                {name}
-                                            </Link>
-                                        </div>
-                                    </td>
-                                    {position &&
-                                        <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {position}
-                                            </Typography>
-                                        </td>}
-
-                                    {team &&
-                                        <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {team}
-                                            </Typography>
-                                        </td>}
-                                </tr>
-                            )
-                                ;
+                                <Fragment>
+                                    <tr key={index}>
+                                        <td className={`p-4 border-b border-blue-gray-50 ${true ? "bg-themeColor !text-white" : "bg-white"}`}
+                                            colSpan={4}>
+                                            <div className="flex items-center gap-3">
+                                                <Link
+                                                    to={""}
+                                                    variant="small"
+                                                    className="font-bold"
+                                                >
+                                                    {item.specialty}
+                                                </Link>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {item.doctors.map((doctor)=>(
+                                        <tr>
+                                            <td className={classes}>
+                                                <Link
+                                                    to={"/doctor/detail"}
+                                                    state={{item, doctor}}
+                                                    variant="small"
+                                                    className="font-bold"
+                                                >
+                                                    <Typography
+                                                        variant="small"
+                                                        color="blue-gray"
+                                                        className="font-normal"
+                                                    >
+                                                        {doctor.name}
+                                                    </Typography>
+                                                </Link>
+                                            </td>
+                                            <td className={classes}>
+                                                <Typography
+                                                    variant="small"
+                                                    color="blue-gray"
+                                                    className="font-normal"
+                                                >
+                                                    {doctor.grade}
+                                                </Typography>
+                                            </td>
+                                            <td className={classes}>
+                                                <Typography
+                                                    variant="small"
+                                                    color="blue-gray"
+                                                    className="font-normal"
+                                                >
+                                                    {doctor.team_name}
+                                                </Typography>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </Fragment>
+                            );
                         },
                     )}
                     </tbody>
                 </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <TablePagination/>
-            </CardFooter>
         </Card>
     );
 }

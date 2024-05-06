@@ -11,6 +11,7 @@ const menu = [
     {name: "All Patients",link: "/all-patients"},
     {name: "Patient By Ward",link: "/ward-patients"},
     {name: "Patient By Team",link: "/team-patients"},
+    {name: "Logout",link: "/auth/login"},
 ]
 
 const DefaultSidebar = ({}) => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     Button,
     Dialog,
@@ -6,26 +6,81 @@ import {
     DialogBody,
     DialogFooter,
 } from "@material-tailwind/react";
-import {SelectInput} from "../input/selectInput";
+import { SelectInput } from "../input/selectInput";
 import DefaultInput from "../input/defaultInput";
+import { getSpecialityList } from "../../../../services/speciality.service";
+import { getGradeList } from "../../../../services/grades.service";
+import { createDoctor } from "../../../../services/doctors.service";
 
-const specialty = [
-    "Specialty 1",
-    "Specialty 2",
-];
-const grade = [
-    "Grade 1",
-    "Grade 2",
-];
+export function AddDoctorModal({ open, setOpen, handleOpen }) {
+    const [specialityList, setSpecialityList] = useState([]);
+    const [gradeList, setGradeList] = useState([]);
 
-export function AddDoctorModal({open, setOpen, handleOpen}) {
+    const [name, setName] = useState("");
+    const [grade, setGrade] = useState("");
+    const [speciality, setSpeciality] = useState("");
+
+    useEffect(() => {
+        Promise.all([getSpecialityList(), getGradeList()])
+            .then((response) => {
+                setSpecialityList(
+                    response[0].data.map((item) => ({
+                        id: item.id,
+                        value: item.name, // Changed value to name
+                    }))
+                );
+                setGradeList(
+                    response[1].data.map((item) => ({
+                        id: item.id,
+                        value: item.name, // Changed value to name
+                    }))
+                );
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+    const submitHandler = () => {
+        let data = {
+            name: name,
+            specialty: speciality,
+            grade: grade,
+        };
+        createDoctor(data)
+            .then((response) => {
+                console.log(response);
+                handleOpen();
+                window.location.reload()
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+    console.log(grade, "specialityList");
     return (
         <Dialog open={open} handler={handleOpen}>
             <DialogHeader>Create Doctor</DialogHeader>
             <DialogBody className={"flex flex-col gap-4"}>
-                <DefaultInput label={"Name"}/>
-                <SelectInput label={"Specialty *"} required options={specialty}/>
-                <SelectInput label={"Consultant TeamPatients *"} required options={grade}/>
+                <DefaultInput
+                    label={"Name"}
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}
+                />
+                <SelectInput
+                    label={"Specialty *"}
+                    required
+                    options={specialityList}
+                    onChange={(value) => setSpeciality(value)}
+                    value={speciality}
+                />
+                <SelectInput
+                    label={"Consultant TeamPatients *"}
+                    required
+                    options={gradeList}
+                    onChange={(value) => setGrade(value)}
+                    value={grade}
+                />
             </DialogBody>
             <DialogFooter>
                 <Button
@@ -36,7 +91,7 @@ export function AddDoctorModal({open, setOpen, handleOpen}) {
                 >
                     <span>Cancel</span>
                 </Button>
-                <Button variant="gradient" color="green" onClick={handleOpen}>
+                <Button variant="gradient" color="green" onClick={submitHandler}>
                     <span>Submit</span>
                 </Button>
             </DialogFooter>

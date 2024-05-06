@@ -4,6 +4,7 @@ import {AddHistoryModal} from "../../../components/modals/addHistoryModal";
 import {DetailTable} from "./components/table/table";
 import {AddTransferModal} from "../../../components/modals/addDischargeModal";
 import {AddDischargeModal} from "../../../components/modals/addTransferModal";
+import { useLocation } from 'react-router-dom';
 
 const PatientsDetail = (props) => {
     const [openHistory, setOpenHistory] = React.useState(false);
@@ -13,11 +14,12 @@ const PatientsDetail = (props) => {
     const handleOpenTransfer = () => setOpenTransfer(!openTransfer);
     const handleOpenDischarge = () => setOpenDischarge(!openTransfer);
 
+    const { state: data } = useLocation()
 
     return (
         <div className={"bg-gray-100 w-full h-[calc(100vh-100px)] overflow-y-auto p-4"}>
             <PageHeader title={"Ethan Thompson"}/>
-            <DetailContent/>
+            <DetailContent data={data}/>
             <PageHeader title={"Care History"} open={openHistory} handleOpen={handleOpenHistory}/>
 
             <div className={"mt-4"}>
@@ -41,11 +43,12 @@ const PatientsDetail = (props) => {
     )
 }
 
-const DetailContent = ({currentWard, consultant}) => {
+const DetailContent = ({data}) => {
     return (
         <div className={"flex flex-col gap-2"}>
-            <span>Current Ward: {currentWard}</span>
-            <span>Consultant Doctor: {consultant}</span>
+            <span>Current Ward: {data.ward}</span>
+            <span>Consultant Doctor: {data.consultant}</span>
+            <span>Team: {data.team}</span>
         </div>
     )
 }
