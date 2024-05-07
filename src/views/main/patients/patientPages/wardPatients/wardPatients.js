@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {WardPatientsTable} from "./components/table/table";
 import PageHeader from "../../../components/header/pageHeader";
 import {SelectInput} from "../../../components/input/selectInput";
-import { getWards } from '../../../../../services/wards.service';
+import {getWardList, getWards} from '../../../../../services/wards.service';
 import { getPatientsListByWard } from '../../../../../services/patients.service';
 
 const wardsListDemo = [
@@ -14,12 +14,12 @@ const wardsListDemo = [
 ];
 const WardPatients = (props) => {
     const [wardsList, setWardsList] = useState([])
-    
+
     const [ward, setWard] = useState(1)
     const [patients, setPatients] = useState([])
 
     useEffect(()=>{
-        getWards()
+        getWardList()
             .then((response)=>{
                 console.log(response);
                 setWardsList(response.data.map(item=>({id: item.id, value: item.name})))
@@ -38,7 +38,7 @@ const WardPatients = (props) => {
                         console.log(error)
                     })
     }
-    
+
 
     return (
         <div className={"bg-gray-100 w-full h-[calc(100vh-150px)] p-4"}>

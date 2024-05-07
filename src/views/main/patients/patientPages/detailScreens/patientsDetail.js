@@ -7,9 +7,9 @@ import {AddDischargeModal} from "../../../components/modals/addTransferModal";
 import { useLocation } from 'react-router-dom';
 
 const PatientsDetail = (props) => {
-    const [openHistory, setOpenHistory] = React.useState(false);
-    const [openTransfer, setOpenTransfer] = React.useState(false);
-    const [openDischarge, setOpenDischarge] = React.useState(false);
+    const [openHistory, setOpenHistory] = useState(false);
+    const [openTransfer, setOpenTransfer] = useState(false);
+    const [openDischarge, setOpenDischarge] = useState(false);
     const handleOpenHistory = () => setOpenHistory(!openHistory);
     const handleOpenTransfer = () => setOpenTransfer(!openTransfer);
     const handleOpenDischarge = () => setOpenDischarge(!openTransfer);

@@ -4,7 +4,7 @@ import PageHeader from "../components/header/pageHeader";
 import {AddDoctorModal} from "../components/modals/addDoctorModal";
 
 const Doctor = (props) => {
-    const [openDoctor, setOpenDoctor] = React.useState(false);
+    const [openDoctor, setOpenDoctor] = useState(false);
     const handleOpenDoctor = () => setOpenDoctor(!openDoctor);
 
     return (

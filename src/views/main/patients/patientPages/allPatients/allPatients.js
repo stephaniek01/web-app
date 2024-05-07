@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {AllPatientsTable} from "./components/table/table";
 import PageHeader from "../../../components/header/pageHeader";
 import { AddPatientModal } from '../../../components/modals/addPatientModal';
 
 const AllPatients = (props) => {
-    const [openPatient, setOpenPatient] = React.useState(false);
+    const [openPatient, setOpenPatient] = useState(false);
     const handleOpenPatient = () => setOpenPatient(!openPatient);
 
     return (

@@ -7,7 +7,6 @@ import { getWards } from "../../../../services/wards.service";
 
 export function AddPatientModal({open, setOpen, handleOpen}) {
     const [wardList, setWardList] = useState([{id:1, value: "ward 1"},{id:2, value:"ward 2"}])
-
     const [name, setName] = useState()
     const [age, setAge] = useState()
     const [gender, setGender] = useState()
@@ -30,7 +29,7 @@ export function AddPatientModal({open, setOpen, handleOpen}) {
             "age": age,
             "gender": gender
         }
-        
+
         createPatient(data)
                     .then((response)=>{
                         console.log(response)
