@@ -9,7 +9,7 @@ import {
 import {SelectInput} from "../input/selectInput";
 import { getDoctorsList } from "../../../../services/doctors.service";
 import { getSpecialityList } from "../../../../services/speciality.service";
-import { getWards } from "../../../../services/wards.service";
+import {getWardList, getWards} from "../../../../services/wards.service";
 import { createTeam } from "../../../../services/teams.service";
 
 
@@ -18,10 +18,10 @@ export function AddTeamModal({open, setOpen, handleOpen}) {
     const [wardsList, setWardsList] = useState([])
     const [filterDoctorsList, setFilterDoctorsList] = useState([]) // doctors list same for consultants
     const [doctorsList, setDoctorsList] = useState([]) // doctors list same for consultants
-    
+
     const [speciality, setSpeciality] = useState()
     const [wards, setWards] = useState()
-    const [doctors, setDoctors] = useState([])
+    const [doctors, setDoctors] = useState()
     const [consultant, setConsultant] = useState()
 
     useEffect(()=>{
@@ -29,7 +29,7 @@ export function AddTeamModal({open, setOpen, handleOpen}) {
             Promise.all([
                 getDoctorsList(),
                 getSpecialityList(),
-                getWards()
+                getWardList()
             ]).then((response)=>{
                 setFilterDoctorsList(response[0].data)
                 setSpecialityList(response[1].data.map(item=>({id: item.id, value: item.name})))
@@ -39,8 +39,9 @@ export function AddTeamModal({open, setOpen, handleOpen}) {
     },[open])
 
     useEffect(()=>{
-        let data = filterDoctorsList.find((item)=>item.specialty == speciality.value)
-        console.log(speciality, data)
+        let specialityName = specialityList.find((item)=>item.id==speciality)?.value
+        console.log(speciality, specialityName)
+        let data = filterDoctorsList.find((item)=>item.specialty == specialityName)
         if(data && data.doctors.length){
             setDoctorsList(data.doctors.map(item=>({id: item.id, value: item.name})))
         }
@@ -57,6 +58,7 @@ export function AddTeamModal({open, setOpen, handleOpen}) {
                 .then((response)=>{
                     console.log(response)
                     handleOpen()
+                    window.location.reload()
                 })
                 .catch((error)=>{
                     console.log(error)
@@ -67,10 +69,10 @@ export function AddTeamModal({open, setOpen, handleOpen}) {
         <Dialog open={open} handler={handleOpen}>
             <DialogHeader>Create Team</DialogHeader>
             <DialogBody className={"flex flex-col gap-4"}>
-              <SelectInput value={speciality?.name} onChange={(value)=>setSpeciality(value)} label={"Specialty *"} required options={specialityList}/>
-              <SelectInput value={consultant?.name} onChange={(value)=>setConsultant(value)} label={"Consultant TeamPatients *"} required options={doctorsList}/>
-              <SelectInput value={doctors?.name} onChange={(value)=>setDoctors(value)} label={"TeamPatients *"} required options={doctorsList}/>
-              <SelectInput value={wards?.name} onChange={(value)=>setWards(value)} label={"Assigned Wards *"} required options={wardsList}/>
+              <SelectInput onChange={(value)=>setSpeciality(value)} label={"Specialty *"} required options={specialityList}/>
+              <SelectInput onChange={(value)=>setConsultant(value)} label={"Consultant TeamPatients *"} required options={doctorsList}/>
+              <SelectInput onChange={(value)=>setDoctors(value)} label={"TeamPatients *"} required options={doctorsList}/>
+              <SelectInput onChange={(value)=>setWards(value)} label={"Assigned Wards *"} required options={wardsList}/>
             </DialogBody>
             <DialogFooter>
                 <Button

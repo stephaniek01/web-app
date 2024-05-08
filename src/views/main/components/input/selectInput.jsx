@@ -6,7 +6,7 @@ export function SelectInput({ options, label, onChange, value }) {
         <div className="w-full">
             <Select label={label} value={value} onChange={onChange}>
                 {options.map((option, index) => (
-                    <Option value={option.id} key={index}>{option.value}</Option> // Changed key={option.id} to key={index}
+                    <Option value={option.id} key={index}>{option.id} {option.value}</Option> // Changed key={option.id} to key={index}
                 ))}
             </Select>
         </div>
